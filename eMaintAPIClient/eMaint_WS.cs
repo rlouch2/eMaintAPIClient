@@ -43,6 +43,16 @@ namespace eMaintAPI
 		}
 
 		#region Select
+
+		/// <summary>
+		/// Get all records from a database table (caution this can be slow if there are lots of records)
+		/// </summary>
+		/// <param name="tableName"></param>
+		/// <param name="columns"></param>
+		/// <param name="orderBy"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="pageIndex"></param>
+		/// <returns></returns>
 		public dynamic[] SelectAll(string tableName, string[] columns = null, string[] orderBy = null, int pageSize = 500, int pageIndex = 1)
 		{
 			if (tableName == null)
@@ -72,6 +82,16 @@ namespace eMaintAPI
 			return results.ToArray();
 		}
 
+		/// <summary>
+		/// Select a set of rows from the database based on a given set of criteria
+		/// </summary>
+		/// <param name="tableName"></param>
+		/// <param name="criteria"></param>
+		/// <param name="columns"></param>
+		/// <param name="orderBy"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="pageIndex"></param>
+		/// <returns></returns>
 		public dynamic[] Select(string tableName, ICriteria criteria, string[] columns, string[] orderBy = null, int pageSize = 500, int pageIndex = 1)
 		{
 			if (tableName == null)
@@ -87,11 +107,6 @@ namespace eMaintAPI
 
 			if (orderBy == null)
 				orderBy = new string[1] { "" };
-
-			//if (criteria.GetType().Name == "Criteria")
-			//	criteria = new CriteriaGroup(Relationship.And, criteria);
-			
-			//CriteriaGroup group = new CriteriaGroup(Relationship.And, criteria);
 
 			string eMaintDataArray = "starting array";
 			List<dynamic> results = new List<dynamic>();
@@ -109,7 +124,7 @@ namespace eMaintAPI
 		}
 
 
-		public List<dynamic> PerformSelect(string tableName, string jsonRequest, out string dataReturn)
+		private List<dynamic> PerformSelect(string tableName, string jsonRequest, out string dataReturn)
 		{
 			HttpStatusCode statusCode = PerformRequest(emaint_URL, "GetAnyData", System.Net.Http.HttpMethod.Post, jsonRequest, out string result);
 
@@ -185,6 +200,11 @@ namespace eMaintAPI
 		#endregion
 
 		#region Create
+		/// <summary>
+		/// Create a new row in the database for the given table
+		/// </summary>
+		/// <param name="record">Row to be inserted</param>
+		/// <returns></returns>
 		public bool Create(JsonApiObject record)
 		{
 			if (record == null) throw new ArgumentNullException("record");
@@ -203,6 +223,12 @@ namespace eMaintAPI
 		#endregion
 
 		#region Delete
+		/// <summary>
+		/// Deletes row from the database
+		/// </summary>
+		/// <param name="record">Record to be deleted</param>
+		/// <param name="recordID">ID or row to be deleted</param>
+		/// <returns></returns>
 		public bool Delete(JsonApiObject record, string recordID)
 		{
 			if (record == null) throw new ArgumentNullException("record");
@@ -222,9 +248,39 @@ namespace eMaintAPI
 		#endregion
 
 		#region RestoreRecord
+		/// <summary>
+		/// Restore a row that has been previously deleted
+		/// </summary>
+		/// <param name="record"></param>
+		/// <param name="recordID"></param>
+		/// <returns></returns>
+		public bool Restore(string tableName, string recordID)
+		{
+			if (tableName == null) throw new ArgumentNullException("record");
+			if (recordID == null) throw new ArgumentNullException("recordID");
+
+			eMaintRecord RestoreRecord = new eMaintRecord(tableName, recordID, eMaintRecord.Action.Restore);
+
+			HttpStatusCode statusCode = PerformRequest(emaint_URL, "Record", System.Net.Http.HttpMethod.Delete, RestoreRecord.ToJSON(), out string result);
+
+			if (statusCode == HttpStatusCode.OK && result != "")
+			{
+				return true;
+			}
+			else
+				return false;
+		}
+
+		/// <summary>
+		/// Restore a row that has been previously deleted
+		/// </summary>
+		/// <param name="record"></param>
+		/// <param name="recordID"></param>
+		/// <returns></returns>
 		public bool Restore(JsonApiObject record, string recordID)
 		{
 			if (record == null) throw new ArgumentNullException("record");
+			if (recordID == null) throw new ArgumentNullException("recordID");
 
 			eMaintRecord RestoreRecord = new eMaintRecord(record, record.Table, recordID, eMaintRecord.Action.Restore);
 
@@ -237,6 +293,7 @@ namespace eMaintAPI
 			else
 				return false;
 		}
+
 		#endregion
 
 		#region PrivateHelpers

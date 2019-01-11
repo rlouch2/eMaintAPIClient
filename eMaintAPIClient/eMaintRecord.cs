@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 
 namespace eMaintAPI
 {
+	/// <summary>
+	/// Holding space for the eMaint record data to be sne t
+	/// </summary>
 	class eMaintRecord
 	{
 		public string id { get; set; }
@@ -24,6 +27,13 @@ namespace eMaintAPI
 			Restore
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="payload">Table row to be worked on</param>
+		/// <param name="tableName">Table to be worked on</param>
+		/// <param name="id">Row id to be worked on</param>
+		/// <param name="action">Action to be completed if a DELETE/RESTORE operation</param>
 		public eMaintRecord(dynamic payload, string tableName, string id = null, Action? action = null)
 		{
 			this.payload = payload;
@@ -32,6 +42,12 @@ namespace eMaintAPI
 			this.action = (action != null) ? action.ToString() : null;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="tableName">Table to be worked on</param>
+		/// <param name="id">Row id to be worked on</param>
+		/// <param name="action">Action to be completed if a DELETE/RESTORE operation</param>
 		public eMaintRecord(string tableName, string id, Action action)
 		{
 			this.payload = payload;
