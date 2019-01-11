@@ -68,7 +68,6 @@ namespace eMaintAPI
 				results.AddRange(PerformSelect(tableName, json_Records, out eMaintDataArray));
 				pageIndex += 1;
 			}
-			//dynamic[] results = PerformSelect(tableName, json_Records);
 
 			return results.ToArray();
 		}
@@ -89,14 +88,17 @@ namespace eMaintAPI
 			if (orderBy == null)
 				orderBy = new string[1] { "" };
 
-			CriteriaGroup group = new CriteriaGroup(Relationship.And, criteria);
+			//if (criteria.GetType().Name == "Criteria")
+			//	criteria = new CriteriaGroup(Relationship.And, criteria);
+			
+			//CriteriaGroup group = new CriteriaGroup(Relationship.And, criteria);
 
 			string eMaintDataArray = "starting array";
 			List<dynamic> results = new List<dynamic>();
 
 			while (eMaintDataArray != "[]")
 			{
-				eMaintGetRecords records = new eMaintGetRecords(tableName, string.Join(",", columns), group.ToJSON(), string.Join(",", orderBy), pageIndex, pageSize);
+				eMaintGetRecords records = new eMaintGetRecords(tableName, string.Join(",", columns), criteria.ToJSON(), string.Join(",", orderBy), pageIndex, pageSize);
 				string json_Records = JsonConvert.SerializeObject(records);
 
 				results.AddRange(PerformSelect(tableName, json_Records, out eMaintDataArray));

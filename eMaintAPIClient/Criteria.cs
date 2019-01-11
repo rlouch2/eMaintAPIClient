@@ -32,7 +32,6 @@ namespace eMaintAPI
 		Or
 	}
 
-
 	public class Criteria : ICriteria
 	{
 		public string field { get; set; }
@@ -84,10 +83,10 @@ namespace eMaintAPI
 
 		public string ToJSON()
 		{
-			JsonSerializerSettings settings = new JsonSerializerSettings();
-			settings.NullValueHandling = NullValueHandling.Ignore;
+			//Since eMaint requires an logic operator for each even if there is only one filter this will just always make a group of one.
+			CriteriaGroup group = new CriteriaGroup(Relationship.And, this);
 
-			return JsonConvert.SerializeObject(this, settings);
+			return group.ToJSON();
 		}
 	}
 
