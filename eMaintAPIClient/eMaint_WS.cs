@@ -47,9 +47,9 @@ namespace eMaintAPI
 		/// <summary>
 		/// Get all records from a database table (caution this can be slow if there are lots of records)
 		/// </summary>
-		/// <param name="tableName"></param>
-		/// <param name="columns"></param>
-		/// <param name="orderBy"></param>
+		/// <param name="tableName">Table to get values from</param>
+		/// <param name="columns">Columns to return, defaulted to all</param>
+		/// <param name="orderBy">Sort order of records returned (fieldName ASC|DESC, fieldName2 ASC|DESC)</param>
 		/// <param name="pageSize"></param>
 		/// <param name="pageIndex"></param>
 		/// <returns></returns>
@@ -85,10 +85,10 @@ namespace eMaintAPI
 		/// <summary>
 		/// Select a set of rows from the database based on a given set of criteria
 		/// </summary>
-		/// <param name="tableName"></param>
-		/// <param name="criteria"></param>
-		/// <param name="columns"></param>
-		/// <param name="orderBy"></param>
+		/// <param name="tableName">Table to get values from</param>
+		/// <param name="criteria">Data filters</param>
+		/// <param name="columns">Columns to return, defaulted to all</param>
+		/// <param name="orderBy">Sort order of records returned (fieldName ASC|DESC, fieldName2 ASC|DESC)</param>
 		/// <param name="pageSize"></param>
 		/// <param name="pageIndex"></param>
 		/// <returns></returns>

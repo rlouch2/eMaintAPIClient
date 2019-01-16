@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>C:\users\rlouch2\source\repos\emaintapiclient\emaintapiclient\emaintapiclient.csproj</id>
+    <version>1.0.0</version>
+    <authors>rlouch2</authors>
+    <owners>rlouch2</owners>
+    <projectUrl>https://github.com/rlouch2/emaintclientapi</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A C# wrapper for the eMaint web services</description>
+    <releaseNotes>Initial package release.</releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <tags>eMaint</tags>
+    <dependencies>
+      <dependency id="NewtonSoft.JSON" version="12.0.1" />
+	  <dependency id="Microsoft.CSharp" version="4.5.0" />
+    </dependencies>
+  </metadata>
+</package>
