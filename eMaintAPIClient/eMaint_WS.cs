@@ -92,14 +92,21 @@ namespace eMaintAPI
 		/// <param name="pageSize"></param>
 		/// <param name="pageIndex"></param>
 		/// <returns></returns>
-		public dynamic[] Select(string tableName, ICriteria criteria, string[] columns, string[] orderBy = null, int pageSize = 500, int pageIndex = 1)
+		public dynamic[] Select(string tableName, ICriteria criteria, string[] columns = null, string[] orderBy = null, int pageSize = 500, int pageIndex = 1)
 		{
 			if (tableName == null)
 				throw new ArgumentNullException("tableName");
 
 			if (criteria != null && columns == null)
-				throw new ArgumentNullException("columns");
-
+			{
+				dynamic emptyRow = CreateDefault(tableName);
+				List<string> cols = new List<string>();
+				foreach (string col in emptyRow.GetDynamicMemberNames())
+				{
+					cols.Add(col);
+				}
+				columns = cols.ToArray();
+			}
 			//this.TableName = tableName;
 
 			if (columns == null)
@@ -213,7 +220,9 @@ namespace eMaintAPI
 
 			HttpStatusCode statusCode = PerformRequest(emaint_URL, "Record", System.Net.Http.HttpMethod.Put, CreateRecord.ToJSON(), out string result);
 
-			if (statusCode == HttpStatusCode.OK && result != "")
+			eMaintResult maintResult = JsonConvert.DeserializeObject<eMaintResult>(result);
+
+			if (statusCode == HttpStatusCode.OK && maintResult.message == "Record Saved Successfully")
 			{
 				return true;
 			}
