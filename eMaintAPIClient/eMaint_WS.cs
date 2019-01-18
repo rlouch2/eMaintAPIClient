@@ -17,8 +17,6 @@ namespace eMaintAPI
 	public class eMaint_WS
 	{
 		private string baseURL { get; set; }
-
-		//public string wsURL { get; set; }
 		public HttpStatusCode LastStatus { get; set; }
 		public string LastResponse { get; set; }
 		public string LastRequest { get; set; }
@@ -26,7 +24,6 @@ namespace eMaintAPI
 		public string eMaint_XT_UserAgent { get; set; }
 		public string eMaint_Authenticate { get; set; }
 		public string emaint_URL { get; set; }
-		//public string TableName { get; set; }
 
 		public eMaint_WS(string in_eMaint_URL)
 		{
