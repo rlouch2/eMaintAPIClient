@@ -9,12 +9,14 @@
 		<RootNamespace>eMaintAPIClient</RootNamespace>
 		<AssemblyName>eMaintAPIClient</AssemblyName>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
+		<Version>1.0.1.1</Version>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<RepositoryUrl>https://github.com/rlouch2/eMaintAPIClient</RepositoryUrl>
 		<RepositoryType>Public</RepositoryType>
 		<PackageProjectUrl>https://github.com/rlouch2/eMaintAPIClient</PackageProjectUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="packages.config" />
