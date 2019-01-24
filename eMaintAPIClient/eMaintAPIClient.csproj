@@ -12,6 +12,9 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RepositoryUrl>https://github.com/rlouch2/eMaintAPIClient</RepositoryUrl>
+		<RepositoryType>Public</RepositoryType>
+		<PackageProjectUrl>https://github.com/rlouch2/eMaintAPIClient</PackageProjectUrl>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="packages.config" />
