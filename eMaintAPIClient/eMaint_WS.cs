@@ -219,7 +219,7 @@ namespace eMaintAPI
 
 			eMaintResult maintResult = JsonConvert.DeserializeObject<eMaintResult>(result);
 
-			if (statusCode == HttpStatusCode.OK && maintResult.message == "Record Saved Successfully")
+			if (statusCode == HttpStatusCode.OK && maintResult.message == "Record Saved Successfully!")
 			{
 				return true;
 			}
