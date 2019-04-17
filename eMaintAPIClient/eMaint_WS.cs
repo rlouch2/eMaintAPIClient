@@ -226,6 +226,17 @@ namespace eMaintAPI
 			else
 				return false;
 		}
+		public dynamic UploadDocument(string filename, string description, string folder, string data)
+		{
+			eMaintDocumentRecord DocumentRecord = new eMaintDocumentRecord(filename, description, folder, data);
+
+			HttpStatusCode statusCode = PerformRequest(emaint_URL, "UploadDocument", System.Net.Http.HttpMethod.Post, DocumentRecord.ToJSON(), out string result);
+
+			eMaintResult maintResult = JsonConvert.DeserializeObject<eMaintResult>(result);
+
+			return maintResult;
+		}
+
 		#endregion
 
 		#region Delete
