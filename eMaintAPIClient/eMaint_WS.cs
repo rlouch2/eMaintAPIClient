@@ -232,9 +232,10 @@ namespace eMaintAPI
 
 			HttpStatusCode statusCode = PerformRequest(emaint_URL, "UploadDocument", System.Net.Http.HttpMethod.Post, DocumentRecord.ToJSON(), out string result);
 
-			eMaintResult maintResult = JsonConvert.DeserializeObject<eMaintResult>(result);
+			//eMaintResult maintResult = JsonConvert.DeserializeObject<eMaintResult>(result);
+			JToken token = JToken.Parse(result);
 
-			return maintResult;
+			return new JsonApiObject(token, folder); ;
 		}
 
 		#endregion
