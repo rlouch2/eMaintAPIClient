@@ -11,7 +11,7 @@ using System.Dynamic;
 
 namespace eMaintAPI
 {
-	public class JsonApiObject : System.Dynamic.DynamicObject
+	public class JsonApiObject : DynamicObject
 	{
 		#region Declarations
 
@@ -26,6 +26,14 @@ namespace eMaintAPI
 		/// Gets the name of the source table for the record that this object represents
 		/// </summary>
 		public string Table { get; set; }
+
+		public int ColumnCount
+		{
+			get
+			{
+				return ((JObject)m_token).Properties().Count();
+			}
+		}
 
 		#endregion Properties
 
@@ -71,7 +79,6 @@ namespace eMaintAPI
 			return base.TryGetMember(binder, out result);
 		}
 
-
 		public override bool TrySetMember(SetMemberBinder binder, object value)
 		{
 			m_token[binder.Name] = (string)value;
@@ -95,15 +102,6 @@ namespace eMaintAPI
 
 		#region Methods
 
-		//public void Add(string name, string value = null)
-		//{
-		//	if (!((JObject)m_token).ContainsKey(name))
-		//	{
-		//		((JObject)m_token).Add(name, new JToken.)
-		//	}
-		//}
-
-
 		public void Update(string name, string value = null)
 		{
 			if (((JObject)m_token).ContainsKey(name))
@@ -112,83 +110,6 @@ namespace eMaintAPI
 			}
 		}
 
-		/// <summary>
-		/// Gets an Xml fragment of all of the fields that have been changed since they were loaded, including in sub-tables
-		/// </summary>
-		//internal XElement ReduceToChanges()
-		//{
-		//	XElement result = new XElement(m_element.Name);
-		//	RecursiveLookForChanges(result, m_element);
-		//	return result;
-		//}
-
-		//internal JToken ReduceToChanges()
-		//{
-		//	//JToken result = new JObject(m_token);
-		//	List<JProperty> removeProperties = new List<JProperty>();
-		//	foreach (JProperty prop in ((JObject)m_token).Properties())
-		//	{
-		//		if (prop.Value == m_OriginalToken[prop.Name])
-		//		{
-		//			removeProperties.Add(prop);
-		//			//prop.Remove();
-		//		}
-		//	}
-
-		//	foreach (JProperty prop in removeProperties)
-		//		prop.Remove();
-
-		//	return m_token;
-		//}
-
-		/// <summary>
-		/// Clears the changed flag from all elements so we can start tracking again
-		/// </summary>
-		//internal void ClearChanges()
-		//{
-		//	RecursiveClearChanges(m_element);
-		//}
-
-		//private void RecursiveClearChanges(XElement start)
-		//{
-		//	foreach (XElement element in start.Elements())
-		//	{
-		//		if (element.Attribute("changed") != null)
-		//		{
-		//			element.Attribute("changed").Remove();
-		//		}
-		//		else if (element.HasElements)
-		//		{
-		//			RecursiveClearChanges(element);
-		//		}
-		//	}
-		//}
-
-		//private void RecursiveLookForChanges(XElement result, XElement start)
-		//{
-		//	foreach (XElement element in start.Elements())
-		//	{
-		//		if (element.Attribute("changed") != null)
-		//		{
-		//			result.Add(new XElement(element.Name, element.Value));
-		//		}
-		//		else if (element.HasElements)
-		//		{
-		//			XElement child = new XElement(element.Name);
-		//			RecursiveLookForChanges(child, element);
-		//			if (child.HasElements)
-		//			{
-		//				// if its a sub-table, we need to attach the ID as an attribute, so the service knows which record to update
-		//				child.Add(new XAttribute(child.Name + "ID", element.Elements(child.Name + "ID").First().Value));
-		//				result.Add(child);
-		//			}
-		//		}
-		//	}
-		//}
-
-
-
 		#endregion Methods
 	}
-
 }
