@@ -35,6 +35,20 @@ namespace eMaintAPI
 			}
 		}
 
+		public Dictionary<string, string> Columns
+		{
+			get
+			{
+				Dictionary<string, string> values = new Dictionary<string, string>();
+				foreach (string col in GetDynamicMemberNames())
+				{
+					values.Add(col, m_token[col].ToString());
+				}
+
+				return values;
+			}
+		}
+
 		#endregion Properties
 
 		#region Constructor
@@ -89,8 +103,7 @@ namespace eMaintAPI
 
 		public override IEnumerable<string> GetDynamicMemberNames()
 		{
-			IList<string> keys = ((JObject)m_token).Properties().Select(p => p.Name).ToList();
-			return keys;
+			return ((JObject)m_token).Properties().Select(p => p.Name.ToString()).ToList();
 		}
 
 		#endregion DynamicObject Overrides

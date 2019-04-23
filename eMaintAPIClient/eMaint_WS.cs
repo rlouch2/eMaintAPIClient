@@ -16,6 +16,10 @@ namespace eMaintAPI
 {
 	public class eMaint_WS
 	{
+
+		#region Properties
+
+
 		private string baseURL { get; set; }
 		public HttpStatusCode LastStatus { get; set; }
 		public string LastResponse { get; set; }
@@ -24,6 +28,10 @@ namespace eMaintAPI
 		public string eMaint_XT_UserAgent { get; set; }
 		public string eMaint_Authenticate { get; set; }
 		public string emaint_URL { get; set; }
+
+		#endregion
+
+		#region Constructor
 
 		public eMaint_WS(string in_eMaint_URL)
 		{
@@ -38,6 +46,8 @@ namespace eMaintAPI
 			this.eMaint_XT_UserAgent = in_eMaint_XT_UserAgent;
 			this.eMaint_Authenticate = in_eMaint_Authenticate;
 		}
+
+		#endregion
 
 		#region Select
 
@@ -113,7 +123,7 @@ namespace eMaintAPI
 				orderBy = new string[1] { "" };
 
 			string eMaintDataArray = "starting array";
-			List<dynamic> results = new List<dynamic>();
+			List<JsonApiObject> results = new List<JsonApiObject>();
 
 			while (eMaintDataArray != "[]")
 			{
@@ -121,6 +131,10 @@ namespace eMaintAPI
 				string json_Records = JsonConvert.SerializeObject(records);
 
 				results.AddRange(PerformSelect(tableName, json_Records, out eMaintDataArray));
+
+				if (results.Count() < pageSize)
+					break;
+
 				pageIndex += 1;
 			}
 
@@ -128,7 +142,7 @@ namespace eMaintAPI
 		}
 
 
-		private List<dynamic> PerformSelect(string tableName, string jsonRequest, out string dataReturn)
+		private List<JsonApiObject> PerformSelect(string tableName, string jsonRequest, out string dataReturn)
 		{
 			HttpStatusCode statusCode = PerformRequest(emaint_URL, "GetAnyData", System.Net.Http.HttpMethod.Post, jsonRequest, out string result);
 
@@ -141,12 +155,12 @@ namespace eMaintAPI
 					JObject jobject = JObject.Parse(json);
 					JArray data = (JArray)jobject["data"];
 					dataReturn = maintResult.data.ToString();
-					return data.Select(x => new JsonApiObject(x, tableName)).ToList<dynamic>();
+					return data.Select(x => new JsonApiObject(x, tableName)).ToList<JsonApiObject>();
 				}
 			}
 
 			dataReturn = "[]";
-			return new List<dynamic>();
+			return new List<JsonApiObject>();
 		}
 		#endregion
 
@@ -185,7 +199,7 @@ namespace eMaintAPI
 			if (tableName == null)
 				throw new ArgumentNullException("tableName");
 
-			List<dynamic> results = new List<dynamic>();
+			List<JsonApiObject> results = new List<JsonApiObject>();
 
 			eMaintGetRecords records = new eMaintGetRecords(tableName, "", "", "", 1, 1);
 			string json_Records = JsonConvert.SerializeObject(records);
@@ -226,6 +240,7 @@ namespace eMaintAPI
 			else
 				return false;
 		}
+
 		public dynamic UploadDocument(string filename, string description, string folder, string data)
 		{
 			eMaintDocumentRecord DocumentRecord = new eMaintDocumentRecord(filename, description, folder, data);
@@ -377,7 +392,6 @@ namespace eMaintAPI
 
 			return status;
 		}
-		#endregion
 
 		private void SetEMaintAuthHeader(WebRequest request, string XT_UserAgent, string Authenticate)
 		{
@@ -387,6 +401,7 @@ namespace eMaintAPI
 			request.Headers.Add("Authenticate", Authenticate);
 			request.Headers.Add("DataFormat", "JSON");
 		}
+		#endregion
 
 	}
 }
