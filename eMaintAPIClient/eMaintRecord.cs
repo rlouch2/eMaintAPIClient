@@ -39,7 +39,7 @@ namespace eMaintAPI
 			this.payload = payload;
 			this.id = id;
 			this.table = tableName;
-			this.action = (action != null) ? action.ToString() : null;
+			this.action = action?.ToString();
 		}
 
 		/// <summary>
